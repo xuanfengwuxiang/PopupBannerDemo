@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context="com.demo.popupbannerdemo.MainActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="我是主程序斤斤计较经济界我是主程序斤斤计较经济界我是主程序斤斤计较经济界"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:id="@+id/rl_parent"
+        >
+        <ImageView
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/iv_popupbanner"
+            android:src="@drawable/ic_practice_time"
+            />
+        <TextView
+            android:layout_centerVertical="true"
+            android:id="@+id/tv_popupbanner"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text=""
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/iv_close"
+            android:src="@drawable/ic_wrong"
+            android:layout_centerVertical="true"
+            />
+
+    </LinearLayout>
+
+
+</LinearLayout>
