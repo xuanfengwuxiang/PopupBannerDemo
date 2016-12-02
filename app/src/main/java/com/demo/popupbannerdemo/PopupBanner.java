@@ -1,5 +1,6 @@
 package com.demo.popupbannerdemo;
 
+import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -37,6 +38,7 @@ public class PopupBanner extends LinearLayout{
     private LinearLayout mRl_parent;
     private PopupBannerBean mPopupBannerBean;
     private int mRl_parent_height;
+    private TimeCount mTimeCount;
 
     //构造方法初始化
     public PopupBanner(Context context,String jsonString) {
@@ -68,6 +70,10 @@ public class PopupBanner extends LinearLayout{
             public void onGlobalLayout() {
                 mRl_parent_height = mRl_parent.getMeasuredHeight();
                 mRl_parent.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                LayoutParams params = new LayoutParams(
+                        LayoutParams.MATCH_PARENT,
+                        0);
+                mRl_parent.setLayoutParams(params);
 
             }
         });
@@ -104,8 +110,8 @@ public class PopupBanner extends LinearLayout{
 
         mIv_close.setOnClickListener(new click());
         //关闭动画定时
-        TimeCount timeCount = new TimeCount(mPopupBannerBean.getShowTime(), 1000,"close");
-        timeCount.start();
+        mTimeCount = new TimeCount(mPopupBannerBean.getShowTime(), 1000,"close");
+        mTimeCount.start();
         //打开动画定时
         TimeCount timeCount1 = new TimeCount(150, 1000,"open");
         timeCount1.start();
@@ -114,8 +120,13 @@ public class PopupBanner extends LinearLayout{
     //点击X符号，关闭popupBanner
     public class click implements OnClickListener{
         public void onClick(View v) {
+            if(startCount>0){
+                return;
+            }
             showOrCloseAnimation(false);
+            mTimeCount.cancel();
             Log.i("PopupBanner","点击关闭按钮了！");
+
         }
     }
 
@@ -128,6 +139,7 @@ public class PopupBanner extends LinearLayout{
         }
         animation.setDuration(mPopupBannerBean.getAnimationTime());
         animation.setInterpolator(new LinearInterpolator());
+        animation.addListener(listener);
         animation.start();
         animation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -170,5 +182,30 @@ public class PopupBanner extends LinearLayout{
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
     }
+
+
+    //对动画进行监听，有动画startCount数量+1。startCount将用于防止关闭按钮的二次点击。
+    private static int startCount = 0;
+    static Animator.AnimatorListener listener = new Animator.AnimatorListener() {
+        @Override
+        public void onAnimationStart(Animator animation) {
+            startCount++;
+        }
+
+        @Override
+        public void onAnimationEnd(Animator animation) {
+            startCount--;
+        }
+
+        @Override
+        public void onAnimationCancel(Animator animation) {
+
+        }
+
+        @Override
+        public void onAnimationRepeat(Animator animation) {
+
+        }
+    };
 
 }
